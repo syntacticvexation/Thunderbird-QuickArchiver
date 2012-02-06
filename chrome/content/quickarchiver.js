@@ -134,27 +134,7 @@ var quickarchiver = {
     getFullPathForList:function (folder) {
 
         if (folder.parent) {
-
-            var first_folder = false;
-            var ret = "";
-
-            while (folder && (folder.parent !== null && folder.parent.parent !== null)) {
-
-                if (!first_folder) {
-                    first_folder = folder.name;
-                    folder = folder.parent;
-                }
-                if (ret.length == 0) {
-                    ret = folder.name;
-                } else {
-                    ret = folder.name + "/" + ret;
-                }
-                folder = folder.parent;
-            }
-
-            if (ret) {
-                return first_folder + ' (' + ret + ')';
-            }
+            return folder.name + '(' + folder.parent.name + ')';
 
         } else {
             return folder.name;
