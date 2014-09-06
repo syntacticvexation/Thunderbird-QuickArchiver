@@ -1,3 +1,5 @@
+Components.utils.import("resource:///modules/MailUtils.js");
+
 var quickarchiver_newMailListener = {
     msgsMoveCopyCompleted:function (aMove, aSrcMsgs, aDestFolder, aDestMsgs) {
 
@@ -46,8 +48,7 @@ var quickarchiverColumn = {
             var rule = quickarchiver_sqlite.dbGetRuleFromHdr(hdr);
 
             if (rule.folder) {
-
-                var folder = GetMsgFolderFromUri(rule.folder, false);
+                var folder = MailUtils.getFolderForURI(rule.folder, false);
 
                 // check if destination folder exists (if not remove rule)
 
@@ -74,7 +75,7 @@ var quickarchiverColumn = {
             var rule = quickarchiver_sqlite.dbGetRuleFromHdr(hdr);
 
             if (rule.folder) {
-                return quickarchiver.getFullPathForList(GetMsgFolderFromUri(rule.folder, false));
+                return quickarchiver.getFullPathForList(MailUtils.getFolderForURI(rule.folder, false));
             }
             return '';
         },
@@ -132,7 +133,6 @@ var quickarchiver = {
         return ret;
     },
     getFullPathForList:function (folder) {
-
         if (folder.parent) {
             return folder.name + '(' + folder.parent.name + ')';
 
@@ -169,7 +169,7 @@ var quickarchiver = {
                 from:quickarchiver_sqlite.parseEmailAddress(hdr.author),
                 subject:quickarchiver_sqlite.parseEmailAddress(hdr.subject),
                 folder:folder,
-                folderPath:this.getFullPath(GetMsgFolderFromUri(folder)),
+                folderPath:this.getFullPath(MailUtils.getFolderForURI(folder)),
                 id:rule.id
             },
             returned:null
@@ -264,7 +264,7 @@ var quickarchiver = {
                     var rule = quickarchiver_sqlite.dbGetRuleFromHdr(hdr);
 
                     if (rule.folder) {
-                        quickarchiver.moveMail(hdr.folder, GetMsgFolderFromUri(rule.folder), hdr);
+                        quickarchiver.moveMail(hdr.folder, MailUtils.getFolderForURI(rule.folder), hdr);
                     }
                 }
             }
@@ -283,7 +283,7 @@ var quickarchiver = {
                 var rule = quickarchiver_sqlite.dbGetRuleFromHdr(hdr);
 
                 if (rule.folder) {
-                    quickarchiver.moveMail(hdr.folder, GetMsgFolderFromUri(rule.folder), hdr);
+                    quickarchiver.moveMail(hdr.folder, MailUtils.getFolderForURI(rule.folder), hdr);
                 }
             }
         }
